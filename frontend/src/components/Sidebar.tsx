@@ -1,103 +1,82 @@
 import { NavLink } from 'react-router-dom'
 import {
   Squares2X2Icon,
-  MapIcon,
   ChartBarIcon,
+  MapIcon,
   CloudIcon,
   FireIcon,
   CpuChipIcon,
   ExclamationTriangleIcon,
   BeakerIcon,
-  DocumentTextIcon,
-  ShieldCheckIcon
+  InformationCircleIcon
 } from '@heroicons/react/24/outline'
 
-const monitorItems = [
+const navItems = [
   { path: '/', label: 'Overview', icon: Squares2X2Icon },
-  { path: '/map', label: 'AQI Map', icon: MapIcon },
-  { path: '/forecast', label: '72h Forecast', icon: ChartBarIcon },
-  { path: '/atmosphere', label: 'Atmosphere', icon: CloudIcon },
-  { path: '/stubble', label: 'Fire & Plume', icon: FireIcon },
-  { path: '/explainability', label: 'Intelligence', icon: CpuChipIcon },
-  { path: '/alerts', label: 'Early Warning', icon: ExclamationTriangleIcon }
-]
-
-const analysisItems = [
-  { path: '/validation', label: 'Model Validation', icon: BeakerIcon },
-  { path: '/terms', label: 'Terms of Service', icon: DocumentTextIcon },
-  { path: '/privacy', label: 'Privacy Policy', icon: ShieldCheckIcon }
+  { path: '/forecast', label: '72H Forecast', icon: ChartBarIcon },
+  { path: '/map', label: 'NCR Air Map', icon: MapIcon },
+  { path: '/atmosphere', label: 'Atmospheric Intel', icon: CloudIcon },
+  { path: '/stubble', label: 'Stubble & Smoke', icon: FireIcon },
+  { path: '/explainability', label: 'Explainable AI', icon: CpuChipIcon },
+  { path: '/alerts', label: 'Alerts Centre', icon: ExclamationTriangleIcon },
+  { path: '/validation', label: 'Model Validation', icon: BeakerIcon }
 ]
 
 export default function Sidebar() {
   return (
-    <aside className="w-64 bg-surface flex flex-col shrink-0 h-screen sticky top-0 z-20 border-r border-borderSubtle">
-      {/* Brand */}
-      <div className="px-6 py-6 flex items-center gap-3">
-        <div className="w-8 h-8 bg-textMain rounded-lg flex items-center justify-center text-surface font-semibold">
-          A
+    <aside className="w-64 bg-[#081023] border-r border-[#1e2d54] flex flex-col shrink-0 h-screen sticky top-0 z-20 shadow-xl">
+      {/* Brand Header */}
+      <div className="px-5 py-5 border-b border-[#1e2d54]/60 flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00d2fe]/20 to-[#0066cc]/30 border border-[#00d2fe]/40 flex items-center justify-center text-[#00d2fe] shadow-[0_0_12px_rgba(0,210,254,0.2)]">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15h18M5 9h14M9 19h6" />
+          </svg>
         </div>
-        <div>
-          <h1 className="text-[14px] font-medium tracking-tight text-textMain leading-none">AeroCast-NCR</h1>
-          <p className="text-[11px] text-textMuted mt-1">Air Pollution Intelligence</p>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <h1 className="text-[16px] font-extrabold tracking-tight text-[#f8fafc] truncate">AeroCast NCR</h1>
+            <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-[#00d2fe]/20 text-[#00d2fe] border border-[#00d2fe]/40">SIH</span>
+          </div>
+          <p className="text-[11px] font-medium text-[#94a3b8] truncate mt-0.5">Weather–Pollution Intelligence</p>
         </div>
       </div>
 
-      <div className="overflow-y-auto px-4 mt-2">
-        {/* Monitor */}
-        <div className="pb-6">
-          <div className="px-2 pb-3 text-[10px] font-medium text-textMuted uppercase tracking-widest">
-            Monitor
-          </div>
-          <nav className="space-y-1">
-            {monitorItems.map(item => {
-              const Icon = item.icon
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  end={item.path === '/'}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] transition-colors ${
-                      isActive
-                        ? 'border border-textMain bg-[#f4f4f5] text-textMain font-medium shadow-[0_1px_2px_rgba(0,0,0,0.02)]'
-                        : 'border border-transparent text-textMuted hover:text-textMain'
-                    }`
-                  }
-                >
-                  <Icon className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-                  <span>{item.label}</span>
-                </NavLink>
-              )
-            })}
-          </nav>
-        </div>
+      {/* Navigation Links */}
+      <div className="overflow-y-auto px-3 py-4 flex-1 space-y-1">
+        {navItems.map(item => {
+          const Icon = item.icon
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/'}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium tracking-tight transition-all group ${
+                  isActive
+                    ? 'bg-[#0e2246] border border-[#00d2fe]/80 text-[#00d2fe] font-bold shadow-[0_0_12px_rgba(0,210,254,0.15)]'
+                    : 'border border-transparent text-[#94a3b8] hover:text-[#f8fafc] hover:bg-[#0d1c3a]'
+                }`
+              }
+            >
+              <Icon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" strokeWidth={1.8} />
+              <span className="truncate">{item.label}</span>
+            </NavLink>
+          )
+        })}
+      </div>
 
-        {/* Analysis */}
-        <div className="pb-6">
-          <div className="px-2 pb-3 text-[10px] font-medium text-textMuted uppercase tracking-widest">
-            Analysis
+      {/* Footer Benchmark Card */}
+      <div className="p-4 border-t border-[#1e2d54]/60">
+        <div className="p-3 rounded-xl bg-[#0d1c3a] border border-[#1b3464] space-y-1">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#f8fafc]">IITM/IMD Benchmark</span>
+            <InformationCircleIcon className="w-4 h-4 text-[#38bdf8]" />
           </div>
-          <nav className="space-y-1">
-            {analysisItems.map(item => {
-              const Icon = item.icon
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] transition-colors ${
-                      isActive
-                        ? 'border border-textMain bg-[#f4f4f5] text-textMain font-medium shadow-[0_1px_2px_rgba(0,0,0,0.02)]'
-                        : 'border border-transparent text-textMuted hover:text-textMain'
-                    }`
-                  }
-                >
-                  <Icon className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-                  <span>{item.label}</span>
-                </NavLink>
-              )
-            })}
-          </nav>
+          <p className="text-[10px] text-[#94a3b8]">400m WRF-Chem Inspired Prototype</p>
+          <div className="pt-2 border-t border-[#1b3464]/60 text-[9px] font-mono text-[#64748b]">
+            SIH26082 · MoES / NCMRWF
+          </div>
         </div>
       </div>
     </aside>

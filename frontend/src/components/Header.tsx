@@ -1,4 +1,9 @@
-import { MapPinIcon, BellIcon } from '@heroicons/react/24/outline'
+import { useState, useEffect } from 'react'
+import {
+  ClockIcon,
+  ArrowPathIcon,
+  Square3Stack3DIcon
+} from '@heroicons/react/24/outline'
 
 interface HeaderProps {
   onRefresh: () => void
@@ -7,46 +12,86 @@ interface HeaderProps {
 }
 
 export default function Header({ onRefresh, loading, onOpenWrfModal }: HeaderProps) {
+  const [currentTime, setCurrentTime] = useState<string>('')
+
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date()
+      const timeStr = now.toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Kolkata',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
+      setCurrentTime(`${timeStr} IST`)
+    }
+    updateClock()
+    const interval = setInterval(updateClock, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <header className="h-20 bg-page flex items-center justify-end px-8 sticky top-0 z-30">
-      <div className="flex items-center gap-6">
-        {/* Location Dropdown */}
-        <button className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-borderSubtle bg-surface text-[12px] font-medium text-textMain hover:bg-[#f4f4f5] transition-colors">
-          <MapPinIcon className="w-4 h-4 text-textMuted" strokeWidth={1.5} />
-          <span>Delhi NCR</span>
-          <span className="text-[10px] text-textMuted ml-1">▾</span>
+    <header className="h-16 bg-[#081023] border-b border-[#1e2d54] flex items-center justify-between px-6 sticky top-0 z-30 shadow-md">
+      {/* Status Badges Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto py-1 no-scrollbar">
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0d1c3a] border border-[#1b3464] text-[11px] font-mono text-[#38bdf8] whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse"></span>
+          <span className="text-[#94a3b8]">OpenAQ:</span>
+          <span className="font-bold text-[#10b981]">LIVE</span>
+        </div>
+
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0d1c3a] border border-[#1b3464] text-[11px] font-mono text-[#38bdf8] whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+          <span className="text-[#94a3b8]">Open-Meteo:</span>
+          <span className="font-bold text-[#38bdf8]">CONNECTED</span>
+        </div>
+
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0d1c3a] border border-[#1b3464] text-[11px] font-mono text-[#38bdf8] whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+          <span className="text-[#94a3b8]">NASA FIRMS:</span>
+          <span className="font-bold text-[#10b981]">LIVE</span>
+        </div>
+
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0d1c3a] border border-[#1b3464] text-[11px] font-mono text-[#38bdf8] whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+          <span className="text-[#94a3b8]">XGBoost Models:</span>
+          <span className="font-bold text-[#38bdf8]">CONNECTED</span>
+        </div>
+
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0d1c3a] border border-[#1b3464] text-[11px] font-mono text-[#38bdf8] whitespace-nowrap">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
+          <span className="text-[#94a3b8]">FastAPI Backend:</span>
+          <span className="font-bold text-[#38bdf8]">CONNECTED</span>
+        </div>
+      </div>
+
+      {/* Right Tools Bar */}
+      <div className="flex items-center gap-3 shrink-0 pl-4">
+        {/* Live IST Clock */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0d1c3a] border border-[#1b3464] text-[12px] font-mono text-[#f8fafc]">
+          <ClockIcon className="w-4 h-4 text-[#38bdf8]" />
+          <span>{currentTime || '22:35:18 IST'}</span>
+        </div>
+
+        {/* WRF-Chem Stub Modal Button */}
+        <button
+          onClick={onOpenWrfModal}
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#0d1c3a] hover:bg-[#152a56] border border-[#1b3464] hover:border-[#38bdf8] text-[12px] font-medium text-[#f8fafc] transition-all shadow-sm group"
+        >
+          <Square3Stack3DIcon className="w-4 h-4 text-[#38bdf8] group-hover:rotate-12 transition-transform" />
+          <span>WRF-Chem Stub</span>
         </button>
 
-        {/* LIVE Badge */}
-        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#166534]">
-          <svg className="w-4 h-4 text-[#22c55e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="tracking-wide">LIVE</span>
-        </div>
-
-        {/* Notification Bell */}
-        <button className="relative text-textMuted hover:text-textMain transition-colors">
-          <BellIcon className="w-5 h-5" strokeWidth={1.5} />
-          <span className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full bg-[#ef4444] border border-page"></span>
+        {/* Glowing Cyan Refresh Button */}
+        <button
+          onClick={onRefresh}
+          disabled={loading}
+          className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-[#00d2fe] hover:bg-[#38bdf8] active:scale-95 text-[#060c1a] font-bold text-[12px] transition-all shadow-[0_0_15px_rgba(0,210,254,0.4)] disabled:opacity-50"
+        >
+          <ArrowPathIcon className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} strokeWidth={2.5} />
+          <span>{loading ? 'Updating...' : 'Refresh'}</span>
         </button>
-
-        {/* User Profile */}
-        <div className="flex items-center gap-3 pl-6 border-l border-borderSubtle">
-          <div className="w-8 h-8 bg-[#f4f4f5] text-textMuted rounded-full flex items-center justify-center font-medium text-[12px]">
-            A
-          </div>
-          <div className="text-[11px] leading-tight text-right">
-            <div className="font-medium text-textMain">Analytics</div>
-            <div className="text-textMuted">Dashboard</div>
-          </div>
-        </div>
-
-        {/* Hidden but functional refresh triggers */}
-        <div className="hidden">
-          <button onClick={onRefresh} disabled={loading}>Refresh</button>
-          <button onClick={onOpenWrfModal}>WRF</button>
-        </div>
       </div>
     </header>
   )

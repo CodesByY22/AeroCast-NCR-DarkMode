@@ -4,17 +4,25 @@
 
 @layer base {
   :root {
-    --bg-page: #fafafa;
-    --bg-surface: #ffffff;
-    --text-main: #1a1a1a;
-    --text-muted: #71717a;
-    --border-subtle: #e4e4e7;
+    --bg-page: #060c1a;
+    --bg-surface: #0d172e;
+    --bg-sidebar: #081023;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-subtle: #1e2d54;
+    --accent-cyan: #00d2fe;
+  }
+
+  html {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "calt", "liga";
+    -webkit-tap-highlight-color: transparent;
+    color-scheme: dark;
   }
 
   body {
     background-color: var(--bg-page);
     color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
@@ -22,28 +30,101 @@
     font-weight: 400;
   }
 
-  /* Typography tweaks to match the clean aesthetic */
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 400;
-    letter-spacing: -0.01em;
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #060c1a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e2d54;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00d2fe;
   }
 }
 
-/* Recharts overrides for the ultra-clean look */
-.recharts-cartesian-axis-tick-value {
-  fill: var(--text-muted);
-  font-size: 11px;
+/* Custom Keyframe Animations for Visual Infographics & Cards */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 210, 254, 0.2);
+    border-color: rgba(0, 210, 254, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 210, 254, 0.5);
+    border-color: rgba(0, 210, 254, 0.8);
+  }
 }
-.recharts-cartesian-grid-horizontal line {
-  stroke: var(--border-subtle);
-  stroke-dasharray: 4 4;
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes shimmerLinear {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 3s infinite ease-in-out;
+}
+
+.animate-float {
+  animation: floatSlow 4s infinite ease-in-out;
+}
+
+.bg-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(0,210,254,0.15) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmerLinear 3s infinite;
+}
+
+/* Card Hover Elevate */
+.hover-card-rise {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+.hover-card-rise:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 210, 254, 0.15);
+  border-color: rgba(0, 210, 254, 0.5) !important;
+}
+
+/* Recharts Dark Theme Overrides */
+.recharts-cartesian-axis-tick-value {
+  fill: #94a3b8 !important;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+}
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #1e2d54 !important;
+  stroke-dasharray: 3 3;
 }
 .recharts-tooltip-wrapper {
   outline: none !important;
 }
 
+/* Custom leaflet map dark tiles overrides */
+.leaflet-container {
+  background-color: #080f22 !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+.leaflet-bar a {
+  background-color: #0d172e !important;
+  color: #f8fafc !important;
+  border-color: #1e2d54 !important;
+}
+.leaflet-bar a:hover {
+  background-color: #1a2a4f !important;
+  color: #00d2fe !important;
+}
+
 /* Selection */
 ::selection {
-  background-color: rgba(43, 108, 176, 0.1);
-  color: var(--text-main);
+  background-color: rgba(0, 210, 254, 0.25);
+  color: #00d2fe;
 }
